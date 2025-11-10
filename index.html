@@ -105,11 +105,13 @@
         </div>
 
         <!-- Simulation Area -->
-        <div class="flex flex-col lg:flex-row">
+        <!-- Set a height on large screens and allow content to fill it -->
+        <div class="flex flex-col lg:flex-row lg:h-[75vh]">
 
             <!-- Controls Panel (Left) -->
-            <div class="w-full lg:w-1/4 bg-white p-6 border-b lg:border-b-0 lg:border-r border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-800 mb-6">Controls</h2>
+            <!-- Make this panel scrollable on large screens if content overflows -->
+            <div class="w-full lg:w-3/12 bg-white p-6 border-b lg:border-b-0 lg:border-r border-gray-200 lg:overflow-y-auto">
+                <h2 class="text-xl font-semibold text-gray-800 mb-6 sticky top-0 bg-white pt-2 pb-4 z-10">Controls</h2>
 
                 <!-- Angle Slider -->
                 <div class="mb-6">
@@ -165,8 +167,9 @@
             </div>
 
             <!-- Visualization (Center) -->
-            <div class="w-full lg:w-1/2 p-6 bg-slate-50" style="min-height: 400px;">
-                <svg id="simulation-svg" viewBox="-200 -200 400 400" preserveAspectRatio="xMidYMid meet" class="w-full h-full">
+            <!-- This will fill the height and its content will be centered -->
+            <div class="w-full lg:w-5/12 p-6 bg-slate-50 flex items-center justify-center" style="min-height: 400px;">
+                <svg id="simulation-svg" viewBox="-200 -200 400 400" preserveAspectRatio="xMidYMid meet" class="w-full h-full max-h-full">
                     <!-- This group contains the ground, which doesn't rotate -->
                     <g id="ground-group">
                         <line x1="-200" y1="100" x2="200" y2="100" stroke="#8c7a6b" stroke-width="4" />
@@ -273,153 +276,152 @@
                 </svg>
             </div>
 
-            <!-- Equations (Right) -->
-            <div class="w-full lg:w-1/4 p-6 bg-white border-t lg:border-t-0 lg:border-l border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Equations of Equilibrium</h2>
+            <!-- Right Column (Guided Learning & Equations) -->
+            <!-- Make this panel scrollable on large screens -->
+            <div class="w-full lg:w-4/12 p-6 bg-white border-t lg:border-t-0 lg:border-l border-gray-200 lg:overflow-y-auto">
                 
-                <!-- Toggles -->
-                <div class="flex space-x-2 mb-4">
-                    <button id="toggle-fbd" class="toggle-btn flex-1 bg-white border border-gray-300 text-gray-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition-all duration-200">Show FBD</button>
-                    <button id="toggle-equations" class="toggle-btn flex-1 bg-white border border-gray-300 text-gray-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition-all duration-200">Show Equations</button>
+                <!-- Guided Learning Section -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 sticky top-0 bg-white pt-2 pb-4 z-10">Guided Learning Module</h2>
+                    <div class="bg-slate-50 p-6 rounded-lg">
+                        
+                        <!-- Step 1 -->
+                        <div id="step-1" class="step active">
+                            <h3 class="text-lg font-semibold text-blue-900">Step 1: Flat Surface (Mass & Normal Force)</h3>
+                            <p class="mt-2 text-gray-700">Let's start simple. A block resting on a flat surface.</p>
+                            <ol class="list-decimal list-inside mt-2 text-gray-700 space-y-1">
+                                <li>Make sure the <strong class="text-blue-600">Angle of Inclination</strong> is <strong>0°</strong>.</li>
+                                <li>Check the box for <strong class="text-blue-600">"Mass (Mg) & Normal Force (R_N)"</strong>.</li>
+                                <li>Toggle <strong class="text-blue-600">"Show Equations"</strong>.</li>
+                            </ol>
+                            <p class="mt-3 font-medium">Key Concepts:</p>
+                            <ul class="list-disc list-inside text-gray-700">
+                                <li>The <strong class="text-blue-700">Weight (Mg)</strong> acts vertically down.</li>
+                                <li>The <strong class="text-green-700">Normal Force (R_N)</strong> is the support force from the surface, acting *perpendicular* to the surface.</li>
+                                <li>The forces are in equilibrium: <strong class="font-mono">ΣF_y = R_N - Mg = 0</strong>, so <strong class="font-mono">R_N = Mg</strong>.</li>
+                            </ul>
+                            <button onclick="nextStep(2)" class="mt-4 bg-blue-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Got it! Next Step &rarr;</button>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div id="step-2" class="step">
+                            <h3 class="text-lg font-semibold text-blue-900">Step 2: Flat Surface (Adding Friction)</h3>
+                            <p class="mt-2 text-gray-700">Now, let's try to move the block.</p>
+                            <ol class="list-decimal list-inside mt-2 text-gray-700 space-y-1">
+                                <li>Keep the angle at <strong>0°</strong>.</li>
+                                <li>Add <strong class="text-pink-600">"External Force 1 (F₁)"</strong>. This force pulls the block to the right.</li>
+                                <li>Select <strong class="text-yellow-600">"Impending Motion Up-Slope"</strong> (which is "to the right" in this case).</li>
+                            </ol>
+                            <p class="mt-3 font-medium text-gray-800">Question: The block is *about* to move right. What is the direction of the friction force (F_f)?</p>
+                            <div class="flex space-x-2 mt-2">
+                                <button onclick="checkAnswer(2, 'left')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Opposite (Left)</button>
+                                <button onclick="checkAnswer(2, 'right')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Same (Right)</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div id="step-3" class="step">
+                            <h3 class="text-lg font-semibold text-blue-900">Step 3: Inclined Plane (The Forces)</h3>
+                            <p class="mt-2 text-gray-700">This is the most important part. Let's tilt the plane. <strong class="text-red-600">Uncheck all forces first.</strong></p>
+                            <ol class="list-decimal list-inside mt-2 text-gray-700 space-y-1">
+                                <li>Click <strong class="text-red-600">"Reset All"</strong>.</li>
+                                <li>Set the <strong class="text-blue-600">Angle of Inclination</strong> to <strong>30°</strong>.</li>
+                                <li>Check <strong class="text-blue-600">"Mass (Mg) & Normal Force (R_N)"</strong>.</li>
+                            </ol>
+                            <p class="mt-3 font-medium text-gray-800">Question 1: Look at the visualization. What is the direction of the Weight (Mg)?</label>
+                            <div class="flex space-x-2 mt-2">
+                                <button onclick="checkAnswer(3.1, 'down')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Vertically Down</button>
+                                <button onclick="checkAnswer(3.1, 'perp')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Perpendicular to Incline</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 4 (triggered by JS) -->
+                        <div id="step-4" class="step">
+                            <h3 class="text-lg font-semibold text-blue-900">Step 4: Resolving the Weight Vector</h3>
+                            <p class="mt-2 text-gray-700">Our FBD axes (x' and y') are *tilted* with the plane. The Weight vector (Mg) is not on either axis. We must resolve it into components that are parallel and perpendicular to the incline.</p>
+                            <ol class="list-decimal list-inside mt-2 text-gray-700 space-y-1">
+                                <li>The visualization now shows the components: <strong class="text-blue-700">Mg·sin(θ)</strong> (parallel) and <strong class="text-blue-700">Mg·cos(θ)</strong> (perpendicular).</li>
+                                <li>Toggle <strong class="text-blue-600">"Show Equations"</strong> to see this.</li>
+                            </ol>
+                            <p class="mt-3 font-medium text-gray-800">Question: Look at the ΣF_y' equation. Which component of weight does the Normal Force (R_N) balance?</p>
+                            <div class="flex space-x-2 mt-2">
+                                <button onclick="checkAnswer(4.1, 'cos')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Mg·cos(θ)</button>
+                                <button onclick="checkAnswer(4.1, 'sin')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Mg·sin(θ)</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 5 (triggered by JS) -->
+                        <div id="step-5" class="step">
+                            <h3 class="text-lg font-semibold text-blue-900">Step 5: Equilibrium on an Incline</h3>
+                            <p class="mt-2 text-gray-700">The component <strong class="text-blue-700">Mg·sin(θ)</strong> is trying to pull the block *down* the incline. Let's add friction to stop it.</p>
+                            <ol class="list-decimal list-inside mt-2 text-gray-700 space-y-1">
+                                <li>Select <strong class="text-yellow-600">"Impending Motion Down-Slope"</strong>.</li>
+                            </ol>
+                            <p class="mt-3 font-medium text-gray-800">Question: To prevent the block from sliding down, what direction must the friction force (F_f) act?</p>
+                            <div class="flex space-x-2 mt-2">
+                                <button onclick="checkAnswer(5, 'up')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Up the Incline</button>
+                                <button onclick="checkAnswer(5, 'down')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Down the Incline</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 6 (triggered by JS) -->
+                        <div id="step-6" class="step">
+                            <h3 class="text-lg font-semibold text-blue-900">Module Complete!</h3>
+                            <p class="mt-2 text-gray-700">You've mastered the core concepts! You've seen how:</p>
+                            <ul class="list-disc list-inside mt-3 text-gray-700 space-y-1">
+                                <li><strong class="text-green-700">Normal Force (R_N)</strong> is always *perpendicular* to the surface.</li>
+                                <li><strong class="text-blue-700">Weight (Mg)</strong> is always *vertically down*.</li>
+                                <li>On an incline, Weight (Mg) is resolved into <strong class="text-blue-700">Mg·cos(θ)</strong> (into the plane) and <strong class="text-blue-700">Mg·sin(θ)</strong> (down the plane).</li>
+                                <li><strong class="text-yellow-700">Friction (F_f)</strong> always *opposes* the impending motion.</li>
+                            </ul>
+                            <p class="mt-4 font-semibold text-lg text-blue-800">You are now in "Free Play" mode. Use the controls to explore any combination of forces, angles, and motion!</p>
+                            <button onclick="resetGuidedLearning()" class="mt-4 bg-gray-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-gray-700 transition duration-300">Restart Guided Learning</button>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Equation Display -->
-                <div id="equation-display" class="hidden p-4 bg-slate-50 rounded-lg h-80 overflow-auto">
-                    <div class="mb-4">
-                        <h3 class="font-bold text-gray-700">ΣF_y' = 0 (Perpendicular)</h3>
-                        <p class="font-mono text-sm text-gray-900 mt-1">
-                            <span data-testid="eq-y-rn" class="hidden text-green-700">+ R_N</span>
-                            <span data-testid="eq-y-mgcos" class="hidden text-blue-700"> - Mg·cos(θ)</span>
-                            <span data-testid="eq-y-f1y" class="hidden"> - F₁·sin(α)</span>
-                            <span data-testid="eq-y-f2y" class="hidden"> + F₂·sin(β)</span>
-                            = 0
-                        </p>
+                <!-- Equations -->
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 sticky top-0 bg-white pt-2 pb-4 z-10">Equations of Equilibrium</h2>
+                    
+                    <!-- Toggles -->
+                    <div class="flex space-x-2 mb-4">
+                        <button id="toggle-fbd" class="toggle-btn flex-1 bg-white border border-gray-300 text-gray-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition-all duration-200">Show FBD</button>
+                        <button id="toggle-equations" class="toggle-btn flex-1 bg-white border border-gray-300 text-gray-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-50 transition-all duration-200">Show Equations</button>
                     </div>
-                    <div>
-                        <h3 class="font-bold text-gray-700">ΣF_x' = 0 (Parallel)</h3>
-                        <p class="font-mono text-sm text-gray-900 mt-1">
-                            <span data-testid="eq-x-f1" class="hidden text-pink-700"> + F₁</span>
-                            <span data-testid="eq-x-f2" class="hidden text-purple-700"> - F₂</span>
-                            <span data-testid="eq-x-friction-up" class="hidden text-yellow-700"> - F_f</span>
-                            <span data-testid="eq-x-friction-down" class="hidden text-yellow-700"> + F_f</span>
-                            <span data-testid="eq-x-mgsin" class="hidden text-blue-700"> - Mg·sin(θ)</span>
-                            = 0
-                        </p>
-                    </div>
-                    <div id="equation-key" class="mt-4 pt-4 border-t border-gray-300">
-                        <p class="text-xs text-gray-600"><span id="friction-note" class="font-medium"></span></p>
-                        <p id="angle-note" class_A"text-xs text-gray-600 mt-1"></p>
+
+                    <!-- Equation Display -->
+                    <div id="equation-display" class="hidden p-4 bg-slate-50 rounded-lg h-80 overflow-auto">
+                        <div class="mb-4">
+                            <h3 class="font-bold text-gray-700">ΣF_y' = 0 (Perpendicular)</h3>
+                            <p class="font-mono text-sm text-gray-900 mt-1">
+                                <span data-testid="eq-y-rn" class="hidden text-green-700">+ R_N</span>
+                                <span data-testid="eq-y-mgcos" class="hidden text-blue-700"> - Mg·cos(θ)</span>
+                                <span data-testid="eq-y-f1y" class="hidden"> - F₁·sin(α)</span>
+                                <span data-testid="eq-y-f2y" class="hidden"> + F₂·sin(β)</span>
+                                = 0
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-700">ΣF_x' = 0 (Parallel)</h3>
+                            <p class="font-mono text-sm text-gray-900 mt-1">
+                                <span data-testid="eq-x-f1" class="hidden text-pink-700"> + F₁</span>
+                                <span data-testid="eq-x-f2" class="hidden text-purple-700"> - F₂</span>
+                                <span data-testid="eq-x-friction-up" class="hidden text-yellow-700"> - F_f</span>
+                                <span data-testid="eq-x-friction-down" class="hidden text-yellow-700"> + F_f</span>
+                                <span data-testid="eq-x-mgsin" class="hidden text-blue-700"> - Mg·sin(θ)</span>
+                                = 0
+                            </p>
+                        </div>
+                        <div id="equation-key" class="mt-4 pt-4 border-t border-gray-300">
+                            <p class="text-xs text-gray-600"><span id="friction-note" class="font-medium"></span></p>
+                            <p id="angle-note" class_A"text-xs text-gray-600 mt-1"></p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Guided Learning Section -->
-        <div class="p-6 md:p-8 border-t border-gray-200 bg-white">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Guided Learning Module</h2>
-            <div class="bg-slate-50 p-6 rounded-lg">
-                
-                <!-- Step 1 -->
-                <div id="step-1" class="step active">
-                    <h3 class="text-lg font-semibold text-blue-900">Step 1: Flat Surface (Mass & Normal Force)</h3>
-                    <p class="mt-2 text-gray-700">Let's start simple. A block resting on a flat surface.</p>
-                    <ol class="list-decimal list-inside mt-2 text-gray-700 space-y-1">
-                        <li>Make sure the <strong class="text-blue-600">Angle of Inclination</strong> is <strong>0°</strong>.</li>
-                        <li>Check the box for <strong class="text-blue-600">"Mass (Mg) & Normal Force (R_N)"</strong>.</li>
-                        <li>Toggle <strong class="text-blue-600">"Show Equations"</strong>.</li>
-                    </ol>
-                    <p class="mt-3 font-medium">Key Concepts:</p>
-                    <ul class="list-disc list-inside text-gray-700">
-                        <li>The <strong class="text-blue-700">Weight (Mg)</strong> acts vertically down.</li>
-                        <li>The <strong class="text-green-700">Normal Force (R_N)</strong> is the support force from the surface, acting *perpendicular* to the surface.</li>
-                        <li>The forces are in equilibrium: <strong class="font-mono">ΣF_y = R_N - Mg = 0</strong>, so <strong class="font-mono">R_N = Mg</strong>.</li>
-                    </ul>
-                    <button onclick="nextStep(2)" class="mt-4 bg-blue-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">Got it! Next Step &rarr;</button>
-                </div>
-
-                <!-- Step 2 -->
-                <div id="step-2" class="step">
-                    <h3 class="text-lg font-semibold text-blue-900">Step 2: Flat Surface (Adding Friction)</h3>
-                    <p class="mt-2 text-gray-700">Now, let's try to move the block.</p>
-                    <ol class="list-decimal list-inside mt-2 text-gray-700 space-y-1">
-                        <li>Keep the angle at <strong>0°</strong>.</li>
-                        <li>Add <strong class="text-pink-600">"External Force 1 (F₁)"</strong>. This force pulls the block to the right.</li>
-                        <li>Select <strong class="text-yellow-600">"Impending Motion Up-Slope"</strong> (which is "to the right" in this case).</li>
-                    </ol>
-                    <p class="mt-3 font-medium text-gray-800">Question: The block is *about* to move right. What is the direction of the friction force (F_f)?</p>
-                    <div class="flex space-x-2 mt-2">
-                        <button onclick="checkAnswer(2, 'left')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Opposite (Left)</button>
-                        <button onclick="checkAnswer(2, 'right')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Same (Right)</button>
-                    </div>
-                </div>
-
-                <!-- Step 3 -->
-                <div id="step-3" class="step">
-                    <h3 class="text-lg font-semibold text-blue-900">Step 3: Inclined Plane (The Forces)</h3>
-                    <p class="mt-2 text-gray-700">This is the most important part. Let's tilt the plane. <strong class="text-red-600">Uncheck all forces first.</strong></p>
-                    <ol class="list-decimal list-inside mt-2 text-gray-700 space-y-1">
-                        <li>Click <strong class="text-red-600">"Reset All"</strong>.</li>
-                        <li>Set the <strong class="text-blue-600">Angle of Inclination</strong> to <strong>30°</strong>.</li>
-                        <li>Check <strong class="text-blue-600">"Mass (Mg) & Normal Force (R_N)"</strong>.</li>
-                    </ol>
-                    <p class="mt-3 font-medium text-gray-800">Question 1: Look at the visualization. What is the direction of the Weight (Mg)?</label>
-                    <div class="flex space-x-2 mt-2">
-                        <button onclick="checkAnswer(3.1, 'down')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Vertically Down</button>
-                        <button onclick="checkAnswer(3.1, 'perp')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Perpendicular to Incline</button>
-                    </div>
-                </div>
-                
-                <!-- Step 4 (triggered by JS) -->
-                <div id="step-4" class="step">
-                     <h3 class="text-lg font-semibold text-blue-900">Step 4: Resolving the Weight Vector</h3>
-                    <p class="mt-2 text-gray-700">Our FBD axes (x' and y') are *tilted* with the plane. The Weight vector (Mg) is not on either axis. We must resolve it into components that are parallel and perpendicular to the incline.</p>
-                    <ol class="list-decimal list-inside mt-2 text-gray-700 space-y-1">
-                        <li>The visualization now shows the components: <strong class="text-blue-700">Mg·sin(θ)</strong> (parallel) and <strong class="text-blue-700">Mg·cos(θ)</strong> (perpendicular).</li>
-                        <li>Toggle <strong class="text-blue-600">"Show Equations"</strong> to see this.</li>
-                    </ol>
-                    <p class="mt-3 font-medium text-gray-800">Question: Look at the ΣF_y' equation. Which component of weight does the Normal Force (R_N) balance?</p>
-                    <div class="flex space-x-2 mt-2">
-                        <button onclick="checkAnswer(4.1, 'cos')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Mg·cos(θ)</button>
-                        <button onclick="checkAnswer(4.1, 'sin')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Mg·sin(θ)</button>
-                    </div>
-                </div>
-
-                <!-- Step 5 (triggered by JS) -->
-                <div id="step-5" class="step">
-                    <h3 class="text-lg font-semibold text-blue-900">Step 5: Equilibrium on an Incline</h3>
-                    <p class="mt-2 text-gray-700">The component <strong class="text-blue-700">Mg·sin(θ)</strong> is trying to pull the block *down* the incline. Let's add friction to stop it.</p>
-                    <ol class="list-decimal list-inside mt-2 text-gray-700 space-y-1">
-                        <li>Select <strong class="text-yellow-600">"Impending Motion Down-Slope"</strong>.</li>
-                    </ol>
-                    <p class="mt-3 font-medium text-gray-800">Question: To prevent the block from sliding down, what direction must the friction force (F_f) act?</p>
-                    <div class="flex space-x-2 mt-2">
-                        <button onclick="checkAnswer(5, 'up')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Up the Incline</button>
-                        <button onclick="checkAnswer(5, 'down')" class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200">Down the Incline</button>
-                    </div>
-                </div>
-
-                <!-- Step 6 (triggered by JS) -->
-                <div id="step-6" class="step">
-                    <h3 class="text-lg font-semibold text-blue-900">Module Complete!</h3>
-                    <p class="mt-2 text-gray-700">You've mastered the core concepts! You've seen how:</p>
-                    <ul class="list-disc list-inside mt-3 text-gray-700 space-y-1">
-                        <li><strong class="text-green-700">Normal Force (R_N)</strong> is always *perpendicular* to the surface.</li>
-                        <li><strong class="text-blue-700">Weight (Mg)</strong> is always *vertically down*.</li>
-                        <li>On an incline, Weight (Mg) is resolved into <strong class="text-blue-700">Mg·cos(θ)</strong> (into the plane) and <strong class="text-blue-700">Mg·sin(θ)</strong> (down the plane).</li>
-                        <li><strong class="text-yellow-700">Friction (F_f)</strong> always *opposes* the impending motion.</li>
-                    </ul>
-                    <p class="mt-4 font-semibold text-lg text-blue-800">You are now in "Free Play" mode. Use the controls to explore any combination of forces, angles, and motion!</p>
-                    <button onclick="resetGuidedLearning()" class="mt-4 bg-gray-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-gray-700 transition duration-300">Restart Guided Learning</button>
-                </div>
-
-            </div>
-        <div class="modal-content">
-            <p id="modal-text" class="text-lg font-medium text-gray-800"></p>
-            <button id="modal-close-btn" class="mt-6 w-full bg-blue-600 text-white px-4 py-2.5 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
-                Continue
-            </button>
-        </div>
-    </div>
+    </div> <!-- End Main Container -->
 
     <script>
         // Get all elements
