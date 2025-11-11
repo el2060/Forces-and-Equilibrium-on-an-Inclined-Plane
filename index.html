@@ -136,185 +136,185 @@
         </div>
 
         <!-- Simulation Area -->
-        <!-- Set a height on large screens and allow content to fill it -->
-        <div class="flex flex-col lg:flex-row lg:h-[75vh]">
+        <!-- This is now a vertical stacking container -->
+        <div class="flex flex-col">
 
-            <!-- Controls Panel (Left) -->
-            <!-- Make this panel scrollable on large screens if content overflows -->
-            <div class="w-full lg:w-3/12 bg-white p-6 border-b lg:border-b-0 lg:border-r border-gray-200 lg:overflow-y-auto">
-                <h2 class="text-3xl font-semibold mb-6 sticky top-0 bg-white pt-2 pb-4 z-10">Controls</h2>
+            <!-- Top Row (on lg): Controls + Visualization -->
+            <div class="flex flex-col lg:flex-row">
+                <!-- Controls Panel -->
+                <div class="w-full lg:w-4/12 bg-white p-6 border-b lg:border-b-0 lg:border-r border-gray-200">
+                    <h2 class="text-3xl font-semibold mb-6 sticky top-0 bg-white pt-2 pb-4 z-10">Controls</h2>
 
-                <!-- Angle Slider -->
-                <div class="mb-8">
-                    <label for="angle-slider" class="block font-semibold mb-2 uppercase" style="font-size: 1rem;">Angle (<span id="angle-value">0</span>°)</label>
-                    <input type="range" id="angle-slider" min="0" max="89" value="0" class="mt-2">
-                </div>
+                    <!-- Angle Slider -->
+                    <div class="mb-8">
+                        <label for="angle-slider" class="block font-semibold mb-2 uppercase" style="font-size: 1rem;">Angle (<span id="angle-value">0</span>°)</label>
+                        <input type="range" id="angle-slider" min="0" max="89" value="0" class="mt-2">
+                    </div>
 
-                <!-- Select Forces -->
-                <div class="mb-8">
-                    <h3 class="text-2xl font-semibold mb-4">Forces</h3>
-                    <div class="space-y-3">
-                        <div class="flex items-center">
-                            <input id="check-mass" type="checkbox" class="h-4 w-4 text-[#007AFF] border-[#d3d3d3] rounded-sm focus:ring-[#007AFF]">
-                            <label for="check-mass" class="ml-3 block font-medium" style="font-size: 1.125rem;">Mass (Mg) & R_N</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input id="check-f1" type="checkbox" class="h-4 w-4 text-[#007AFF] border-[#d3d3d3] rounded-sm focus:ring-[#007AFF]">
-                            <label for="check-f1" class="ml-3 block font-medium" style="font-size: 1.125rem;">Force 1 (F₁)</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input id="check-f2" type="checkbox" class="h-4 w-4 text-[#007AFF] border-[#d3d3d3] rounded-sm focus:ring-[#007AFF]">
-                            <label for="check-f2" class="ml-3 block font-medium" style="font-size: 1.125rem;">Force 2 (F₂)</label>
+                    <!-- Select Forces -->
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-semibold mb-4">Forces</h3>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <input id="check-mass" type="checkbox" class="h-4 w-4 text-[#007AFF] border-[#d3d3d3] rounded-sm focus:ring-[#007AFF]">
+                                <label for="check-mass" class="ml-3 block font-medium" style="font-size: 1.125rem;">Mass (Mg) & R_N</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="check-f1" type="checkbox" class="h-4 w-4 text-[#007AFF] border-[#d3d3d3] rounded-sm focus:ring-[#007AFF]">
+                                <label for="check-f1" class="ml-3 block font-medium" style="font-size: 1.125rem;">Force 1 (F₁)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="check-f2" type="checkbox" class="h-4 w-4 text-[#007AFF] border-[#d3d3d3] rounded-sm focus:ring-[#007AFF]">
+                                <label for="check-f2" class="ml-3 block font-medium" style="font-size: 1.125rem;">Force 2 (F₂)</label>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Impending Motion -->
-                <div class="mb-8">
-                    <h3 class="text-2xl font-semibold mb-4">Friction (F_f)</h3>
-                    <p class="text-sm text-gray-500 mb-3">Friction appears when impending motion is set.</p>
-                    <div class="space-y-3">
-                        <div class="flex items-center">
-                            <input id="motion-none" type="radio" name="motion" value="none" checked class="h-4 w-4 text-[#007AFF] border-[#d3d3d3] focus:ring-[#007AFF]">
-                            <label for="motion-none" class="ml-3 block font-medium" style="font-size: 1.125rem;">None</label>
+                    <!-- Impending Motion -->
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-semibold mb-4">Friction (F_f)</h3>
+                        <p class="text-sm text-gray-500 mb-3">Friction appears when impending motion is set.</p>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <input id="motion-none" type="radio" name="motion" value="none" checked class="h-4 w-4 text-[#007AFF] border-[#d3d3d3] focus:ring-[#007AFF]">
+                                <label for="motion-none" class="ml-3 block font-medium" style="font-size: 1.125rem;">None</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="motion-up" type="radio" name="motion" value="up" class="h-4 w-4 text-[#007AFF] border-[#d3d3d3] focus:ring-[#007AFF]">
+                                <label for="motion-up" class="ml-3 block font-medium" style="font-size: 1.125rem;">Motion Up-Slope</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="motion-down" type="radio" name="motion" value="down" class="h-4 w-4 text-[#007AFF] border-[#d3d3d3] focus:ring-[#007AFF]">
+                                <label for="motion-down" class="ml-3 block font-medium" style="font-size: 1.125rem;">Motion Down-Slope</label>
+                            </div>
                         </div>
-                        <div class="flex items-center">
-                            <input id="motion-up" type="radio" name="motion" value="up" class="h-4 w-4 text-[#007AFF] border-[#d3d3d3] focus:ring-[#007AFF]">
-                            <label for="motion-up" class="ml-3 block font-medium" style="font-size: 1.125rem;">Motion Up-Slope</label>
-                        </div>
-                        <div class="flex items-center">
-                            <input id="motion-down" type="radio" name="motion" value="down" class="h-4 w-4 text-[#007AFF] border-[#d3d3d3] focus:ring-[#007AFF]">
-                            <label for="motion-down" class="ml-3 block font-medium" style="font-size: 1.125rem;">Motion Down-Slope</label>
-                        </div>
+                    </div>
+                    
+                    <!-- Reset Button -->
+                    <div class="mt-8">
+                        <button id="reset-btn" class="w-full bg-white text-[#FF6E6C] font-bold uppercase rounded-2xl px-6 py-3 shadow-sm hover:bg-[#FFD7D1] transition-all duration-200 ease-in-out border border-[#FF6E6C]">
+                            Reset All
+                        </button>
                     </div>
                 </div>
                 
-                <!-- Reset Button -->
-                <div class="mt-8">
-                    <button id="reset-btn" class="w-full bg-white text-[#FF6E6C] font-bold uppercase rounded-2xl px-6 py-3 shadow-sm hover:bg-[#FFD7D1] transition-all duration-200 ease-in-out border border-[#FF6E6C]">
-                        Reset All
-                    </button>
-                </div>
-            </div>
-
-            <!-- Visualization (Center) -->
-            <!-- This will fill the height and its content will be centered -->
-            <div class="w-full lg:w-4/12 p-6 flex items-center justify-center" style="background-color: #F1F1F1; min-height: 400px;">
-                <svg id="simulation-svg" viewBox="-200 -200 400 400" preserveAspectRatio="xMidYMid meet" class="w-full h-full max-h-full">
-                    <!-- This group contains the ground, which doesn't rotate -->
-                    <g id="ground-group">
-                        <line x1="-200" y1="100" x2="200" y2="100" stroke="#8c7a6b" stroke-width="4" />
-                        <!-- Angle Arc -->
-                        <path id="angle-arc" d="M 50 100 A 30 30 0 0 0 38.3 90.7" stroke="#383838" stroke-width="1.5" fill="none" stroke-dasharray="2,2" />
-                        <text id="angle-text" x="55" y="85" font-size="10" fill="#383838">θ</text>
-                    </g>
-                    
-                    <!-- This group rotates with the incline -->
-                    <g id="incline-group" transform="rotate(0 0 100)">
-                        <!-- Inclined Plane -->
-                        <line x1="-150" y1="0" x2="150" y2="0" stroke="#a16207" stroke-width="10" />
+                <!-- Visualization -->
+                <div class="w-full lg:w-8/12 p-6 flex items-center justify-center" style="background-color: #F1F1F1; min-height: 450px;">
+                    <svg id="simulation-svg" viewBox="-200 -200 400 400" preserveAspectRatio="xMidYMid meet" class="w-full h-full max-h-full">
+                        <!-- This group contains the ground, which doesn't rotate -->
+                        <g id="ground-group">
+                            <line x1="-200" y1="100" x2="200" y2="100" stroke="#8c7a6b" stroke-width="4" />
+                            <!-- Angle Arc -->
+                            <path id="angle-arc" d="M 50 100 A 30 30 0 0 0 38.3 90.7" stroke="#383838" stroke-width="1.5" fill="none" stroke-dasharray="2,2" />
+                            <text id="angle-text" x="55" y="85" font-size="10" fill="#383838">θ</text>
+                        </g>
                         
-                        <!-- Block -->
-                        <rect id="block" x="-30" y="-50" width="60" height="50" fill="#e5e7eb" stroke="#383838" stroke-width="2" class="hidden" />
+                        <!-- This group rotates with the incline -->
+                        <g id="incline-group" transform="rotate(0 0 100)">
+                            <!-- Inclined Plane -->
+                            <line x1="-150" y1="0" x2="150" y2="0" stroke="#a16207" stroke-width="10" />
+                            
+                            <!-- Block -->
+                            <rect id="block" x="-30" y="-50" width="60" height="50" fill="#e5e7eb" stroke="#383838" stroke-width="2" class="hidden" />
 
-                        <!-- FBD AXES (always visible when block is) -->
-                        <g id="fbd-axes" class="hidden">
-                            <!-- Y-axis -->
-                            <line x1="0" y1="-100" x2="0" y2="70" stroke="#383838" stroke-width="1.5" stroke-dasharray="4,4" />
-                            <polygon points="0,-105 -5,-95 5,-95" fill="#383838" />
-                            <text x="5" y="-95" font-size="12" fill="#383838">y'</text>
-                            <!-- X-axis -->
-                            <line x1="-100" y1="0" x2="150" y2="0" stroke="#383838" stroke-width="1.5" stroke-dasharray="4,4" />
-                            <polygon points="155,0 145,-5 145,5" fill="#383838" />
-                            <text x="140" y="-8" font-size="12" fill="#383838">x'</text>
+                            <!-- FBD AXES (always visible when block is) -->
+                            <g id="fbd-axes" class="hidden">
+                                <!-- Y-axis -->
+                                <line x1="0" y1="-100" x2="0" y2="70" stroke="#383838" stroke-width="1.5" stroke-dasharray="4,4" />
+                                <polygon points="0,-105 -5,-95 5,-95" fill="#383838" />
+                                <text x="5" y="-95" font-size="12" fill="#383838">y'</text>
+                                <!-- X-axis -->
+                                <line x1="-100" y1="0" x2="150" y2="0" stroke="#383838" stroke-width="1.5" stroke-dasharray="4,4" />
+                                <polygon points="155,0 145,-5 145,5" fill="#383838" />
+                                <text x="140" y="-8" font-size="12" fill="#383838">x'</text>
+                            </g>
+
+                            <!-- FBD VECTORS (in tilted frame) -->
+                            <g id="fbd-vectors" class="hidden">
+                                <!-- Normal Force (R_N) - Teal -->
+                                <g id="vec-rn" class="hidden">
+                                    <line x1="0" y1="-25" x2="0" y2="-85" stroke="#21AD93" stroke-width="3" />
+                                    <polygon points="0,-90 -5,-80 5,-80" fill="#21AD93" />
+                                    <text x="5" y="-60" font-size="12" fill="#21AD93" font-weight="bold">R_N</text>
+                                </g>
+                                <!-- Force 1 (F1) - Coral Red -->
+                                <g id="vec-f1" class="hidden">
+                                    <line x1="30" y1="-25" x2="100" y2="-25" stroke="#FF6E6C" stroke-width="3" />
+                                    <polygon points="105,-25 95,-20 95,-30" fill="#FF6E6C" />
+                                    <text x="60" y="-30" font-size="12" fill="#FF6E6C" font-weight="bold">F₁</text>
+                                </g>
+                                <!-- Force 2 (F2) - Turquoise -->
+                                <g id="vec-f2" class="hidden">
+                                    <line x1="-30" y1="-25" x2="-100" y2="-25" stroke="#20BBAA" stroke-width="3" />
+                                    <polygon points="-105,-25 -95,-20 -95,-30" fill="#20BBAA" />
+                                    <text x="-75" y="-30" font-size="12" fill="#20BBAA" font-weight="bold">F₂</text>
+                                </g>
+                                <!-- Friction (F_f) (up-slope) - Yellow -->
+                                <g id="vec-friction-up" class="hidden">
+                                    <line x1="-30" y1="5" x2="-90" y2="5" stroke="#FFDE00" stroke-width="3" />
+                                    <polygon points="-95,5 -85,0 -85,10" fill="#FFDE00" />
+                                    <text x="-65" y="20" font-size="12" fill="#FFDE00" font-weight="bold">F_f</text>
+                                </g>
+                                <!-- Friction (F_f) (down-slope) - Yellow -->
+                                <g id="vec-friction-down" class="hidden">
+                                    <line x1="30" y1="5" x2="90" y2="5" stroke="#FFDE00" stroke-width="3" />
+                                    <polygon points="95,5 85,0 85,10" fill="#FFDE00" />
+                                    <text x="55" y="20" font-size="12" fill="#FFDE00" font-weight="bold">F_f</text>
+                                </g>
+
+                                <!-- Weight Components (Wx', Wy') - Blue -->
+                                <g id="vec-w-comps" class="hidden">
+                                    <!-- Wx' component -->
+                                    <line x1="0" y1="0" x2="0" y2="50" stroke="#007AFF" stroke-width="2.5" stroke-dasharray="3,3"/>
+                                    <polygon points="0,55 -4,47 4,47" fill="#007AFF" />
+                                    <text x="5" y="35" font-size="10" fill="#007AFF" font-weight="bold">Mg·sin(θ)</text>
+                                    <!-- Wy' component -->
+                                    <line x1="0" y1="0" x2="-43.3" y2="25" stroke="#007AFF" stroke-width="2.5" stroke-dasharray="3,3"/>
+                                    <polygon points="-46.6,27 -43.3,19 -38.3,27" fill="#007AFF" />
+                                    <text x="-50" y="45" font-size="10" fill="#007AFF" font-weight="bold">Mg·cos(θ)</text>
+                                </g>
+                            </g>
+                        </g>
+                        
+                        <!-- WEIGHT VECTOR (NON-ROTATED) - Blue -->
+                        <g id="vec-w-group" class="hidden" transform="rotate(0 0 0)">
+                            <!-- This is the 'real' weight vector, always pointing down -->
+                            <line x1="0" y1="-25" x2="0" y2="50" stroke="#007AFF" stroke-width="3" />
+                            <polygon points="0,55 -5,45 5,45" fill="#007AFF" />
+                            <text x="5" y="20" font-size="12" fill="#007AFF" font-weight="bold">Mg</text>
+                            <!-- Dashed lines connecting W to its components -->
+                            <line id="w-comp-line1" x1="0" y1="50" x2="0" y2="50" stroke="#007AFF" stroke-width="1.5" stroke-dasharray="3,3" />
+                            <line id="w-comp-line2" x1="0" y1="0" x2="0" y2="0" stroke="#007AFF" stroke-width="1.5" stroke-dasharray="3,3" />
                         </g>
 
-                        <!-- FBD VECTORS (in tilted frame) -->
-                        <g id="fbd-vectors" class="hidden">
-                            <!-- Normal Force (R_N) - Teal -->
-                            <g id="vec-rn" class="hidden">
-                                <line x1="0" y1="-25" x2="0" y2="-85" stroke="#21AD93" stroke-width="3" />
-                                <polygon points="0,-90 -5,-80 5,-80" fill="#21AD93" />
-                                <text x="5" y="-60" font-size="12" fill="#21AD93" font-weight="bold">R_N</text>
+                        <!-- FBD (Free Body Diagram) - a separate view -->
+                        <g id="fbd-display" transform="translate(100, -100)" class="hidden">
+                            <text x="0" y="-80" font-size="12" text-anchor="middle" font-weight="bold">Free Body Diagram</text>
+                            <!-- FBD is drawn relative to (0,0) of this group -->
+                            <circle cx="0" cy="0" r="5" fill="#383838" />
+                            <!-- FBD Axes (tilted) -->
+                            <g id="fbd-axes-tilted">
+                                <line x1="-70" y1="0" x2="70" y2="0" stroke="#383838" stroke-width="1.5" stroke-dasharray="3,3" />
+                                <polygon points="75,0 65,-4 65,4" fill="#383838" />
+                                <text x="65" y="-6" font-size="10">x'</text>
+                                <line x1="0" y1="-70" x2="0" y2="70" stroke="#383838" stroke-width="1.5" stroke-dasharray="3,3" />
+                                <polygon points="0,-75 -4,-65 4,-65" fill="#383838" />
+                                <text x="6" y="-65" font-size="10">y'</text>
                             </g>
-                            <!-- Force 1 (F1) - Coral Red -->
-                            <g id="vec-f1" class="hidden">
-                                <line x1="30" y1="-25" x2="100" y2="-25" stroke="#FF6E6C" stroke-width="3" />
-                                <polygon points="105,-25 95,-20 95,-30" fill="#FF6E6C" />
-                                <text x="60" y="-30" font-size="12" fill="#FF6E6C" font-weight="bold">F₁</text>
-                            </g>
-                            <!-- Force 2 (F2) - Turquoise -->
-                            <g id="vec-f2" class="hidden">
-                                <line x1="-30" y1="-25" x2="-100" y2="-25" stroke="#20BBAA" stroke-width="3" />
-                                <polygon points="-105,-25 -95,-20 -95,-30" fill="#20BBAA" />
-                                <text x="-75" y="-30" font-size="12" fill="#20BBAA" font-weight="bold">F₂</text>
-                            </g>
-                            <!-- Friction (F_f) (up-slope) - Yellow -->
-                            <g id="vec-friction-up" class="hidden">
-                                <line x1="-30" y1="5" x2="-90" y2="5" stroke="#FFDE00" stroke-width="3" />
-                                <polygon points="-95,5 -85,0 -85,10" fill="#FFDE00" />
-                                <text x="-65" y="20" font-size="12" fill="#FFDE00" font-weight="bold">F_f</text>
-                            </g>
-                            <!-- Friction (F_f) (down-slope) - Yellow -->
-                            <g id="vec-friction-down" class="hidden">
-                                <line x1="30" y1="5" x2="90" y2="5" stroke="#FFDE00" stroke-width="3" />
-                                <polygon points="95,5 85,0 85,10" fill="#FFDE00" />
-                                <text x="55" y="20" font-size="12" fill="#FFDE00" font-weight="bold">F_f</text>
-                            </g>
-
-                            <!-- Weight Components (Wx', Wy') - Blue -->
-                            <g id="vec-w-comps" class="hidden">
-                                <!-- Wx' component -->
-                                <line x1="0" y1="0" x2="0" y2="50" stroke="#007AFF" stroke-width="2.5" stroke-dasharray="3,3"/>
-                                <polygon points="0,55 -4,47 4,47" fill="#007AFF" />
-                                <text x="5" y="35" font-size="10" fill="#007AFF" font-weight="bold">Mg·sin(θ)</text>
-                                <!-- Wy' component -->
-                                <line x1="0" y1="0" x2="-43.3" y2="25" stroke="#007AFF" stroke-width="2.5" stroke-dasharray="3,3"/>
-                                <polygon points="-46.6,27 -43.3,19 -38.3,27" fill="#007AFF" />
-                                <text x="-50" y="45" font-size="10" fill="#007AFF" font-weight="bold">Mg·cos(θ)</text>
-                            </g>
+                            <!-- FBD Vectors (cloned) -->
+                            <g id="fbd-vectors-clone"></g>
                         </g>
-                    </g>
-                    
-                    <!-- WEIGHT VECTOR (NON-ROTATED) - Blue -->
-                    <g id="vec-w-group" class="hidden" transform="rotate(0 0 0)">
-                        <!-- This is the 'real' weight vector, always pointing down -->
-                        <line x1="0" y1="-25" x2="0" y2="50" stroke="#007AFF" stroke-width="3" />
-                        <polygon points="0,55 -5,45 5,45" fill="#007AFF" />
-                        <text x="5" y="20" font-size="12" fill="#007AFF" font-weight="bold">Mg</text>
-                        <!-- Dashed lines connecting W to its components -->
-                        <line id="w-comp-line1" x1="0" y1="50" x2="0" y2="50" stroke="#007AFF" stroke-width="1.5" stroke-dasharray="3,3" />
-                        <line id="w-comp-line2" x1="0" y1="0" x2="0" y2="0" stroke="#007AFF" stroke-width="1.5" stroke-dasharray="3,3" />
-                    </g>
-
-                    <!-- FBD (Free Body Diagram) - a separate view -->
-                    <g id="fbd-display" transform="translate(100, -100)" class="hidden">
-                        <text x="0" y="-80" font-size="12" text-anchor="middle" font-weight="bold">Free Body Diagram</text>
-                        <!-- FBD is drawn relative to (0,0) of this group -->
-                        <circle cx="0" cy="0" r="5" fill="#383838" />
-                        <!-- FBD Axes (tilted) -->
-                        <g id="fbd-axes-tilted">
-                            <line x1="-70" y1="0" x2="70" y2="0" stroke="#383838" stroke-width="1.5" stroke-dasharray="3,3" />
-                            <polygon points="75,0 65,-4 65,4" fill="#383838" />
-                            <text x="65" y="-6" font-size="10">x'</text>
-                            <line x1="0" y1="-70" x2="0" y2="70" stroke="#383838" stroke-width="1.5" stroke-dasharray="3,3" />
-                            <polygon points="0,-75 -4,-65 4,-65" fill="#383838" />
-                            <text x="6" y="-65" font-size="10">y'</text>
-                        </g>
-                        <!-- FBD Vectors (cloned) -->
-                        <g id="fbd-vectors-clone"></g>
-                    </g>
-                </svg>
+                    </svg>
+                </div>
             </div>
 
-            <!-- Right Column (Guided Learning & Equations) -->
-            <!-- Make this panel scrollable on large screens -->
-            <div class="w-full lg:w-5/12 bg-white border-t lg:border-t-0 lg:border-l border-gray-200 flex flex-col">
-                
-                <!-- Pane 1: Guided Learning (Scrollable) -->
-                <div class="flex-1 overflow-y-auto p-6">
+            <!-- Bottom Row (on lg): Guided Learning + Equations -->
+            <div class="flex flex-col lg:flex-row bg-white border-t border-gray-200">
+                <!-- Guided Learning -->
+                <div class="w-full lg:w-7/12 p-6 border-b lg:border-b-0 lg:border-r border-gray-200">
                     <h2 class="text-3xl font-semibold mb-6 sticky top-0 bg-white pt-2 pb-4 z-10">Guided Learning</h2>
-                    <div class="bg-[#F1F1F1] p-6 rounded-2xl shadow-card">
+                    <!-- Scrollable guided learning card -->
+                    <div class="bg-[#F1F1F1] p-6 rounded-2xl shadow-card h-[50vh] min-h-[400px] overflow-y-auto">
                         
                         <!-- Step 1 -->
                         <div id="step-1" class="step active">
@@ -430,9 +430,9 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Pane 2: Equations (Fixed) -->
-                <div class="flex-shrink-0 p-6 border-t border-gray-200">
+                
+                <!-- Equations -->
+                <div class="w-full lg:w-5/12 p-6">
                     <h2 class="text-3xl font-semibold mb-6 sticky top-0 bg-white pt-2 pb-4 z-10">Equations</h2>
                     
                     <!-- Toggles -->
@@ -442,7 +442,7 @@
                     </div>
 
                     <!-- Equation Display -->
-                    <div id="equation-display" class="hidden p-6 bg-[#F1F1F1] rounded-2xl shadow-card h-80 overflow-auto">
+                    <div id="equation-display" class="hidden p-6 bg-[#F1F1F1] rounded-2xl shadow-card h-[50vh] min-h-[400px] overflow-auto">
                         <div class="mb-6">
                             <h3 class="font-semibold text-xl">ΣF_y' = 0 (Perpendicular)</h3>
                             <p class="mt-2" style="font-size: 1.125rem;">
@@ -658,7 +658,7 @@
             // X' (Parallel) Equation
             eqXF1.classList.toggle('hidden', !isF1Checked);
             eqXF2.classList.toggle('hidden', !isF2Checked);
-            eqXMgSin.classList.toggle('hidden', !isMassChecked || currentAngle === 0);
+            eqXMgSin.classList.toggle('hidden', !isMassChecked || currentAngle === toggleg);
             
             eqXFrictionUp.classList.toggle('hidden', !showFrictionUp);
             eqXFrictionDown.classList.toggle('hidden', !showFrictionDown);
@@ -837,8 +837,10 @@
                     document.getElementById('step-2').appendChild(btn);
                     // Disable answer buttons
                     document.querySelectorAll('#step-2 button').forEach(b => {
-                        b.disabled = true;
-                        b.classList.add('opacity-50', 'cursor-not-allowed');
+                        if (b.onclick.toString().includes('checkAnswer(2,')) {
+                            b.disabled = true;
+                            b.classList.add('opacity-50', 'cursor-not-allowed');
+                        }
                     });
                 } else {
                     showModal("Not quite. Friction *opposes* motion. Try again.");
@@ -892,8 +894,10 @@
                     document.getElementById('step-4').appendChild(btn);
                     // Disable answer buttons
                     document.querySelectorAll('#step-4 button').forEach(b => {
-                        b.disabled = true;
-                        b.classList.add('opacity-50', 'cursor-not-allowed');
+                        if (b.onclick.toString().includes('checkAnswer(4.1')) {
+                            b.disabled = true;
+                            b.classList.add('opacity-50', 'cursor-not-allowed');
+                        }
                     });
                 } else {
                     showModal("Not quite. Look at the ΣF_y' equation. R_N is on the y' axis. Which other force component is on the y' axis?");
@@ -913,8 +917,10 @@
                     document.getElementById('step-5').appendChild(btn);
                     // Disable answer buttons
                     document.querySelectorAll('#step-5 button').forEach(b => {
-                        b.disabled = true;
-                        b.classList.add('opacity-50', 'cursor-not-allowed');
+                        if (b.onclick.toString().includes('checkAnswer(5,')) {
+                            b.disabled = true;
+                            b.classList.add('opacity-50', 'cursor-not-allowed');
+                        }
                     });
                 } else {
                     showModal("Not quite. Remember, friction *opposes* impending motion. The block is about to slide *down*. Try again.");
