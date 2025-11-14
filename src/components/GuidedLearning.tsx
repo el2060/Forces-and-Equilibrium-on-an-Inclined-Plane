@@ -52,30 +52,60 @@ const GuidedLearning = ({
         {currentStep === 1 && (
           <div>
             <div className="bg-blue-600 text-white px-4 py-2 rounded-md inline-block mb-3 text-base font-bold">
-              STEP 1: FLAT SURFACE
+              STEP 1: FLAT SURFACE BASICS
             </div>
             <p className="mt-3 leading-relaxed text-base md:text-lg text-gray-700">
-              Let's start simple. A block resting on a flat surface.
+              Let's start simple. A block resting on a <strong className="text-blue-600">flat (horizontal) surface</strong> where the angle θ = 0°.
             </p>
+            {simulation.angle !== 0 && (
+              <div className="mt-2 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-md px-3 py-2 text-sm font-semibold">
+                Current angle is {simulation.angle}°. Set it to 0° in Controls → Angle slider.
+              </div>
+            )}
             <ol className="list-decimal list-inside mt-3 space-y-2 leading-relaxed text-base md:text-lg text-gray-700">
-              <li>Make sure <strong className="text-blue-600">Angle</strong> is <strong>0°</strong>.</li>
+              <li>Set <strong className="text-blue-600">Angle</strong> to <strong>0°</strong>.</li>
               <li>Check <strong className="text-green-600">"Mass (Mg) & R_N"</strong>.</li>
-              <li>Toggle <strong className="text-blue-600">"Show Equations"</strong> (in center panel).</li>
+              <li>Optionally toggle <strong className="text-blue-600">"Show Equations"</strong>.</li>
             </ol>
             <div className="mt-4 p-4 bg-white rounded-md border-l-4 border-blue-500">
               <p className="font-semibold text-base text-gray-800 mb-2">Key Concepts:</p>
               <ul className="list-disc list-inside leading-relaxed text-base text-gray-700 space-y-1.5">
-                <li><strong className="text-blue-600">Weight (Mg)</strong> acts vertically down.</li>
-                <li><strong className="text-green-600">Normal Force (R_N)</strong> is perpendicular to surface.</li>
-                <li>Forces in equilibrium: <strong>ΣFy = +R_N - Mg = 0</strong></li>
+                <li><strong className="text-blue-600">Weight (Mg)</strong> acts <em>vertically downward</em> regardless of surface.</li>
+                <li><strong className="text-green-600">Normal Force (R_N)</strong> acts <em>perpendicular</em> to the surface (so vertical up when flat).</li>
+                <li>When flat (θ = 0°) the axes align with forces → no need to resolve Mg into components.</li>
+                <li>Equilibrium in y: <strong>ΣF<sub>y</sub> = R_N − Mg = 0</strong></li>
               </ul>
             </div>
-            <button
-              onClick={() => onNextStep(2)}
-              className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg px-6 py-3 uppercase text-base shadow transition-all duration-200"
-            >
-              Got it! Next →
-            </button>
+            <div className="mt-4 p-3 bg-white rounded-md border-l-4 border-blue-500">
+              <p className="font-semibold text-base text-gray-800 mb-2">Question:</p>
+              <p className="text-base text-gray-700">On a flat surface, what is the direction of the Normal Reaction Force R_N?</p>
+            </div>
+            {!answeredQuestions.has('step1-q1') ? (
+              <div className="flex flex-col sm:flex-row gap-2 mt-3">
+                <button
+                  onClick={() => {
+                    onShowFeedback("Correct! On a flat surface, R_N points vertically upward, perpendicular to the surface.");
+                    onMarkAnswered('step1-q1');
+                  }}
+                  className="flex-1 bg-white border-2 border-gray-300 rounded-lg px-5 py-3 font-bold text-base uppercase hover:bg-gray-100 transition-all duration-200"
+                >
+                  Vertically Upward
+                </button>
+                <button
+                  onClick={() => onShowFeedback("Not quite. 'Parallel to surface' would mean horizontal. Normal means perpendicular. Try again.")}
+                  className="flex-1 bg-white border-2 border-gray-300 rounded-lg px-5 py-3 font-bold text-base uppercase hover:bg-gray-100 transition-all duration-200"
+                >
+                  Parallel to Surface
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => onNextStep(2)}
+                className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg px-6 py-3 uppercase text-base shadow transition-all duration-200"
+              >
+                Got it! Next →
+              </button>
+            )}
           </div>
         )}
 
@@ -216,44 +246,71 @@ const GuidedLearning = ({
         {currentStep === 4 && (
           <div>
             <div className="bg-blue-600 text-white px-4 py-2 rounded-md inline-block mb-3 text-base font-bold">
-              STEP 4: RESOLVING WEIGHT
+              STEP 4: WHEN & HOW TO RESOLVE WEIGHT
             </div>
             <p className="mt-2 leading-relaxed text-sm md:text-base text-gray-700">
-              Our axes (x' and y') are tilted. The Weight (Mg) is not on either axis. We must resolve it into components.
+              On an incline, our analysis axes (x' parallel to plane, y' perpendicular) are <em>tilted</em>. The Weight (Mg) is vertical, so it does not lie purely along either axis — we must resolve it.
             </p>
-            <ol className="list-decimal list-inside mt-3 space-y-1 leading-relaxed text-sm md:text-base text-gray-700">
-              <li>Note the components: <strong className="text-blue-600">Mg·sin(θ)</strong> (parallel) and <strong className="text-blue-600">Mg·cos(θ)</strong> (perpendicular).</li>
-              <li>Toggle <strong className="text-blue-600">"Show Equations"</strong> (in the right panel).</li>
-            </ol>
             <div className="mt-4 p-3 bg-white rounded-md border-l-4 border-blue-500">
-              <p className="font-semibold text-base text-gray-800 mb-2">Question:</p>
-              <p className="text-base text-gray-700">Look at the ΣFy equation. Which component of weight does the Normal Force (R_N) balance?</p>
+              <p className="font-semibold text-base text-gray-800 mb-2">Question 1:</p>
+              <p className="text-base text-gray-700">When do we need to split (resolve) the Weight into x- and y-components?</p>
             </div>
-            {!answeredQuestions.has('step4') ? (
+            {!answeredQuestions.has('step4-q1') && (
               <div className="flex flex-col sm:flex-row gap-2 mt-3">
                 <button
                   onClick={() => {
-                    onShowFeedback("Exactly right! The Normal Force (R_N) balances the perpendicular component of weight, Mg·cos(θ).");
-                    onMarkAnswered('step4');
+                    onShowFeedback("Correct! Only when axes are not aligned with the force — e.g. on an inclined plane (θ ≠ 0°) or using rotated axes.");
+                    onMarkAnswered('step4-q1');
                   }}
                   className="flex-1 bg-white border-2 border-gray-300 rounded-lg px-5 py-3 font-bold text-base uppercase hover:bg-gray-100 transition-all duration-200"
                 >
-                  Mg·cos(θ)
+                  When θ ≠ 0° (Incline)
                 </button>
                 <button
-                  onClick={() => onShowFeedback("Not quite. Look at the ΣFy equation. R_N is on the y' axis. Which other force component is on the y' axis?")}
+                  onClick={() => onShowFeedback("Not quite. On a flat surface (θ = 0°) Mg already aligns with the y-axis. No need to resolve. Try again.")}
                   className="flex-1 bg-white border-2 border-gray-300 rounded-lg px-5 py-3 font-bold text-base uppercase hover:bg-gray-100 transition-all duration-200"
                 >
-                  Mg·sin(θ)
+                  Always
                 </button>
               </div>
-            ) : (
-              <button
-                onClick={() => onNextStep(5)}
-                className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg px-6 py-3 uppercase text-base shadow transition-all duration-200"
-              >
-                Next Step →
-              </button>
+            )}
+            {answeredQuestions.has('step4-q1') && (
+              <>
+                <ol className="list-decimal list-inside mt-4 space-y-1 leading-relaxed text-sm md:text-base text-gray-700">
+                  <li>Components: <strong className="text-blue-600">Mg·sin(θ)</strong> (parallel, drives motion) & <strong className="text-blue-600">Mg·cos(θ)</strong> (perpendicular, balanced by R_N).</li>
+                  <li>Toggle <strong className="text-blue-600">"Show Equations"</strong> to see ΣF expressions.</li>
+                </ol>
+                <div className="mt-4 p-3 bg-white rounded-md border-l-4 border-blue-500">
+                  <p className="font-semibold text-base text-gray-800 mb-2">Question 2:</p>
+                  <p className="text-base text-gray-700">Look at the ΣF<sub>y'</sub> equation. Which component of weight does the Normal Force (R_N) balance?</p>
+                </div>
+                {!answeredQuestions.has('step4-q2') ? (
+                  <div className="flex flex-col sm:flex-row gap-2 mt-3">
+                    <button
+                      onClick={() => {
+                        onShowFeedback("Exactly! R_N balances Mg·cos(θ), the perpendicular component.");
+                        onMarkAnswered('step4-q2');
+                      }}
+                      className="flex-1 bg-white border-2 border-gray-300 rounded-lg px-5 py-3 font-bold text-base uppercase hover:bg-gray-100 transition-all duration-200"
+                    >
+                      Mg·cos(θ)
+                    </button>
+                    <button
+                      onClick={() => onShowFeedback("Not quite. Mg·sin(θ) lies along the plane (x'). R_N is perpendicular (y'). Try again.")}
+                      className="flex-1 bg-white border-2 border-gray-300 rounded-lg px-5 py-3 font-bold text-base uppercase hover:bg-gray-100 transition-all duration-200"
+                    >
+                      Mg·sin(θ)
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => onNextStep(5)}
+                    className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg px-6 py-3 uppercase text-base shadow transition-all duration-200"
+                  >
+                    Next Step →
+                  </button>
+                )}
+              </>
             )}
           </div>
         )}

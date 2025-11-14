@@ -10,10 +10,10 @@ const Visualization = ({ simulation }: VisualizationProps) => {
   const { angle, showMass, showTension, showPush, motionDirection, push } = simulation;
   const { weight, normalForce, friction, tension } = forces;
 
-  // SVG dimensions - increased for better visibility
-  const width = 800;
-  const height = 600;
-  const padding = 60; // Padding to keep arrows inside
+  // SVG dimensions - increased for better visibility & responsiveness
+  const width = 900;
+  const height = 650;
+  const padding = 70; // Padding to keep arrows inside
   const centerX = width / 2;
   const centerY = height * 0.6;
 
@@ -32,6 +32,35 @@ const Visualization = ({ simulation }: VisualizationProps) => {
   const maxForce = Math.max(weight, normalForce, friction, tension, push, 1);
   const availableSpace = Math.min(width - 2 * padding, height - 2 * padding);
   const forceScale = Math.min(0.7, availableSpace / maxForce / 2);
+
+  // Track placed label bounding boxes to avoid overlap (simple collision avoidance)
+  const placedLabels: { x: number; y: number; w: number; h: number }[] = [];
+
+  const registerLabelPosition = (x: number, y: number, text: string, fontSize = 16) => {
+    const approxCharWidth = fontSize * 0.6; // heuristic
+    const paddingBox = 6;
+    const w = text.length * approxCharWidth + paddingBox * 2;
+    const h = fontSize + paddingBox * 2;
+    let newX = x - w / 2; // convert to top-left
+    let newY = y - h / 2;
+
+    // Try shifting if overlapping existing labels (spiral / iterative offset)
+    const maxAttempts = 25;
+    let attempt = 0;
+    let offsetRadius = 0;
+    let angleStep = Math.PI / 4; // 45 deg increments
+    while (attempt < maxAttempts) {
+      const overlaps = placedLabels.some(b => !(newX + w < b.x || newX > b.x + b.w || newY + h < b.y || newY > b.y + b.h));
+      if (!overlaps) break;
+      attempt++;
+      offsetRadius += 10; // increase radius gradually
+      const theta = attempt * angleStep;
+      newX = x - w / 2 + offsetRadius * Math.cos(theta);
+      newY = y - h / 2 + offsetRadius * Math.sin(theta);
+    }
+    placedLabels.push({ x: newX, y: newY, w, h });
+    return { x: newX + w / 2, y: newY + h / 2, w, h }; // return center-based for text anchor
+  };
   
   // Force origin offsets to prevent overlap
   const getForceOrigin = (offsetType: 'center' | 'left' | 'right' | 'top') => {
@@ -50,13 +79,14 @@ const Visualization = ({ simulation }: VisualizationProps) => {
 
   // Helper to draw arrows with better label positioning
   const drawArrow = (
-    x1: number, 
-    y1: number, 
-    x2: number, 
-    y2: number, 
-    color: string, 
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    color: string,
     label: string,
-    labelOffset: { x: number; y: number } = { x: 0, y: 0 }
+    labelOffset: { x: number; y: number } = { x: 0, y: 0 },
+    fontSize = 16
   ) => {
     const dx = x2 - x1;
     const dy = y2 - y1;
@@ -68,9 +98,12 @@ const Visualization = ({ simulation }: VisualizationProps) => {
     const headLength = 15;
     const headAngle = Math.PI / 6;
 
-    // Calculate label position with offset
-    const labelX = (x1 + x2) / 2 + labelOffset.x;
-    const labelY = (y1 + y2) / 2 + labelOffset.y;
+  // Preferred label position (midpoint + offset)
+  const preferredX = (x1 + x2) / 2 + labelOffset.x;
+  const preferredY = (y1 + y2) / 2 + labelOffset.y;
+
+  // Adjust to avoid collisions & register
+  const adjusted = registerLabelPosition(preferredX, preferredY, label, fontSize);
 
     return (
       <g key={label}>
@@ -79,15 +112,27 @@ const Visualization = ({ simulation }: VisualizationProps) => {
           points={`${x2},${y2} ${x2 - headLength * Math.cos(arrowAngle - headAngle)},${y2 - headLength * Math.sin(arrowAngle - headAngle)} ${x2 - headLength * Math.cos(arrowAngle + headAngle)},${y2 - headLength * Math.sin(arrowAngle + headAngle)}`}
           fill={color}
         />
+        {/* Text background for readability */}
+        <rect
+          x={adjusted.x - adjusted.w / 2}
+          y={adjusted.y - adjusted.h / 2}
+          width={adjusted.w}
+          height={adjusted.h}
+          rx={6}
+          ry={6}
+          fill="rgba(255,255,255,0.85)"
+          stroke={color}
+          strokeWidth={1.2}
+        />
         <text
-          x={labelX}
-          y={labelY}
+          x={adjusted.x}
+          y={adjusted.y}
           fill={color}
-          fontSize="16"
+          fontSize={fontSize}
           fontWeight="700"
           textAnchor="middle"
           dominantBaseline="middle"
-          style={{ textShadow: '1px 1px 2px white, -1px -1px 2px white' }}
+          style={{ pointerEvents: 'none' }}
         >
           {label}
         </text>
@@ -101,14 +146,25 @@ const Visualization = ({ simulation }: VisualizationProps) => {
         <span className="text-2xl">📊</span>
         Visualization
       </h2>
-      <div className="bg-gray-50 rounded-lg border-2 border-gray-300 p-4 flex items-center justify-center overflow-hidden">
+      <div className="bg-gray-50 rounded-lg border-2 border-gray-300 p-4 flex items-center justify-center overflow-auto">
         <svg 
           width={width} 
           height={height} 
           viewBox={`0 0 ${width} ${height}`}
           className="max-w-full h-auto"
-          style={{ minHeight: '400px' }}
+          style={{ minHeight: '450px' }}
         >
+          {/* Subtle background grid */}
+          <defs>
+            <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e0e0e0" strokeWidth="1" />
+            </pattern>
+            <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+              <rect width="100" height="100" fill="url(#smallGrid)" />
+              <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#d0d0d0" strokeWidth="1.5" />
+            </pattern>
+          </defs>
+          <rect x={0} y={0} width={width} height={height} fill="url(#grid)" />
           {/* Ground */}
           <line
             x1={centerX - 280}
@@ -173,7 +229,8 @@ const Visualization = ({ simulation }: VisualizationProps) => {
                 blockY + weight * forceScale,
                 '#007AFF',
                 `Mg=${weight.toFixed(1)}N`,
-                { x: 40, y: 0 }
+                { x: 40, y: 0 },
+                18
               )}
               
               {/* Normal Force (perpendicular to surface - pointing AWAY from surface) */}
@@ -186,7 +243,8 @@ const Visualization = ({ simulation }: VisualizationProps) => {
                   normalOrigin.y - normalForce * forceScale * Math.cos(angleRad),
                   '#21AD93',
                   `R_N=${normalForce.toFixed(1)}N`,
-                  { x: -45, y: -25 }
+                  { x: -45, y: -25 },
+                  18
                 );
               })()}
               
@@ -194,26 +252,68 @@ const Visualization = ({ simulation }: VisualizationProps) => {
               {angle > 0 && (
                 <>
                   {/* Parallel component label only */}
-                  <text
-                    x={blockX + 70}
-                    y={blockY + 80}
-                    fill="#0056b3"
-                    fontSize="15"
-                    fontWeight="700"
-                  >
-                    Mg·sin({angle}°)
-                  </text>
+                  {(() => {
+                    const label = `Mg·sin(${angle}°)`;
+                    const pos = registerLabelPosition(blockX + 70, blockY + 80, label, 15);
+                    return (
+                      <g key="mg-sin">
+                        <rect
+                          x={pos.x - pos.w / 2}
+                          y={pos.y - pos.h / 2}
+                          width={pos.w}
+                          height={pos.h}
+                          rx={6}
+                          ry={6}
+                          fill="rgba(255,255,255,0.85)"
+                          stroke="#0056b3"
+                          strokeWidth={1}
+                        />
+                        <text
+                          x={pos.x}
+                          y={pos.y}
+                          fill="#0056b3"
+                          fontSize={15}
+                          fontWeight="700"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                        >
+                          {label}
+                        </text>
+                      </g>
+                    );
+                  })()}
                   
                   {/* Perpendicular component label only */}
-                  <text
-                    x={blockX - 95}
-                    y={blockY + 50}
-                    fill="#0056b3"
-                    fontSize="15"
-                    fontWeight="700"
-                  >
-                    Mg·cos({angle}°)
-                  </text>
+                  {(() => {
+                    const label = `Mg·cos(${angle}°)`;
+                    const pos = registerLabelPosition(blockX - 95, blockY + 50, label, 15);
+                    return (
+                      <g key="mg-cos">
+                        <rect
+                          x={pos.x - pos.w / 2}
+                          y={pos.y - pos.h / 2}
+                          width={pos.w}
+                          height={pos.h}
+                          rx={6}
+                          ry={6}
+                          fill="rgba(255,255,255,0.85)"
+                          stroke="#0056b3"
+                          strokeWidth={1}
+                        />
+                        <text
+                          x={pos.x}
+                          y={pos.y}
+                          fill="#0056b3"
+                          fontSize={15}
+                          fontWeight="700"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                        >
+                          {label}
+                        </text>
+                      </g>
+                    );
+                  })()}
                 </>
               )}
             </>
@@ -229,7 +329,8 @@ const Visualization = ({ simulation }: VisualizationProps) => {
               tensionOrigin.y - tension * forceScale * Math.sin(angleRad),
               '#FF6E6C',
               `T=${tension}N`,
-              { x: 0, y: -25 }
+              { x: 0, y: -25 },
+              16
             );
           })()}
           
@@ -243,7 +344,8 @@ const Visualization = ({ simulation }: VisualizationProps) => {
               pushOrigin.y,
               '#00CED1',
               `P=${push}N`,
-              { x: 0, y: -22 }
+              { x: 0, y: -22 },
+              16
             );
           })()}
           
@@ -260,7 +362,8 @@ const Visualization = ({ simulation }: VisualizationProps) => {
               frictionOrigin.y - (motionDirection === 'down' ? 1 : -1) * friction * forceScale * Math.sin(angleRad),
               '#FFDE00',
               `F_f=${friction.toFixed(1)}N`,
-              { x: 0, y: motionDirection === 'down' ? -28 : 28 }
+              { x: 0, y: motionDirection === 'down' ? -28 : 28 },
+              16
             );
           })()}
         </svg>
