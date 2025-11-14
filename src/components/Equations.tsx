@@ -1,0 +1,65 @@
+import { SimulationState } from '../types/simulation';
+import { calculateForces, getEquations } from '../utils/physics';
+
+interface EquationsProps {
+  simulation: SimulationState;
+  onToggle: () => void;
+}
+
+const Equations = ({ simulation, onToggle }: EquationsProps) => {
+  const forces = calculateForces(simulation);
+  const equations = getEquations(simulation, forces);
+
+  return (
+    <div className="p-4 md:p-5 bg-white">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 flex items-center gap-2">
+          <span className="text-2xl">🧮</span>
+          Equations
+        </h2>
+        <button
+          onClick={onToggle}
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg px-4 py-2 text-base shadow transition-all duration-200"
+        >
+          {simulation.showEquations ? 'Hide' : 'Show'}
+        </button>
+      </div>
+
+      {simulation.showEquations && (
+        <div className="bg-gradient-to-br from-gray-50 to-blue-50 p-4 rounded-lg border border-gray-200 space-y-3">
+          <div className="bg-white p-3 rounded-md border-l-4 border-blue-500">
+            <h3 className="text-base font-bold text-gray-700 mb-2">
+              Y-Axis (⊥ to Surface):
+            </h3>
+            <p className="text-base font-mono text-gray-800">{equations.sumFy}</p>
+            <p className="text-base font-mono text-green-700 mt-1">{equations.rnCalc}</p>
+          </div>
+
+          <div className="bg-white p-3 rounded-md border-l-4 border-blue-500">
+            <h3 className="text-base font-bold text-gray-700 mb-2">
+              X-Axis (∥ to Surface):
+            </h3>
+            <p className="text-base font-mono text-gray-800">{equations.sumFx}</p>
+            {equations.frictionCalc && (
+              <p className="text-base font-mono text-yellow-700 mt-1">{equations.frictionCalc}</p>
+            )}
+          </div>
+
+          {simulation.angle > 0 && (
+            <div className="bg-blue-100 p-3 rounded-md">
+              <h3 className="text-base font-bold text-blue-800 mb-2">Weight Components:</h3>
+              <p className="text-xs font-mono text-blue-900">
+                Parallel (x'): Mg·sin({simulation.angle}°) = {equations.weightParallel} N
+              </p>
+              <p className="text-xs font-mono text-blue-900">
+                Perpendicular (y'): Mg·cos({simulation.angle}°) = {equations.weightPerpendicular} N
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Equations;

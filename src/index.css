@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888888;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Custom styles for sliders */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: #d1d5db;
+  outline: none;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+input[type="range"]:hover {
+  opacity: 1;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #007AFF;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #007AFF;
+  cursor: pointer;
+  border: none;
+}
+
+/* SVG text styling */
+svg text {
+  user-select: none;
+  font-family: 'IBM Plex Mono', 'Menlo', 'Consolas', 'Liberation Mono', monospace;
+}
+
+/* Spotlight animation - disabled for cleaner design */
+@keyframes pulse-spotlight {
+  0%, 100% {
+    box-shadow: none;
+  }
+  50% {
+    box-shadow: none;
+  }
+}
+
+.spotlight {
+  /* Animation disabled for consistent, clean design */
+  box-shadow: none;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+body {
+  font-family: 'IBM Plex Mono', 'Menlo', 'Consolas', 'Liberation Mono', monospace;
+}
